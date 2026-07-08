@@ -10,6 +10,7 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<!-- Debug is useless for a mod -->
 		<DebugType>none</DebugType>
+		<OutputType>Library</OutputType>
 	</PropertyGroup>
 	<!-- DO NOT CHANGE ANYTHING BETWEEN THESE -->
 
@@ -23,14 +24,19 @@
 
 	<PropertyGroup>
 		<!-- This should point to wherever your games primary EXE is -->
-		<TheLongDarkPath>O:\SteamLibrary\steamapps\common\TheLongDark</TheLongDarkPath>
+		<TheLongDarkPath>..\..\</TheLongDarkPath>
 		<Mods>$(TheLongDarkPath)\Mods</Mods>
-		<Plugins>$(TheLongDarkPath)\Plugins</Plugins>
-		<UserData>$(TheLongDarkPath)\UserData</UserData>
-		<UserLibs>$(TheLongDarkPath)\UserLibs</UserLibs>
-		<!--Path to a release folder-->
-		<ReleaseFolderPath>P:\Modding\The Long Dark\Github\MyMods\VitaminCTracker\Release</ReleaseFolderPath>
+		<MelonLoaderPath>$(TheLongDarkPath)\MelonLoader\net6</MelonLoaderPath>
+		<ManagedPath>$(TheLongDarkPath)\MelonLoader\Managed</ManagedPath>
+		<Il2CppPath>$(TheLongDarkPath)\MelonLoader\Il2CppAssemblies</Il2CppPath>
+		<AssemblySearchPaths>$(AssemblySearchPaths);$(MelonLoaderPath);$(ManagedPath);$(Il2CppPath);$(Mods);</AssemblySearchPaths>
 	</PropertyGroup>
+
+	<ItemDefinitionGroup>
+		<Reference>
+			<Private>False</Private>
+		</Reference>
+	</ItemDefinitionGroup>
 
 	<ItemGroup>
 	  <None Remove="Resources\vitaminctracker" />
@@ -49,14 +55,9 @@
 	<!-- List of used references -->
 	<ItemGroup>
 		<!-- This is the base reference. MUST EXIST -->
-		<PackageReference Include="STBlade.Modding.TLD.Il2CppAssemblies.Windows" Version="2.35.0" />
+		<PackageReference Include="STBlade.Modding.TLD.Il2CppAssemblies.Windows" Version="2.51.0" />
 		<!-- This is only if you use the ModSettings -->
 		<PackageReference Include="STBlade.Modding.TLD.ModSettings" Version="1.9.0" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Reference Include="ComplexLogger">
-	    <HintPath>..\..\..\..\Libraries\ComplexLogger.dll</HintPath>
-	  </Reference>
 	</ItemGroup>
 
 	<!-- Most commonly used using's. Add to this so you dont need to define them in the cs files -->
@@ -71,12 +72,8 @@
 		<Using Include="ModSettings" />
 	</ItemGroup>
 
-	<!-- This is a build event. It will copy your dll to the currently defined TheLongDarkPath's Mods folder -->
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<!-- This copies the mods files to the games mod dir -->
+	<Target Name="CopyToModsFolder" AfterTargets="Build" Condition="Exists('$(Mods)')">
 		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(Mods)" />
-		<!-- This copies the mods files to a designated release folder. Speeds up finding the dll after a build -->
-		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ReleaseFolderPath)" />
 	</Target>
 
 </Project>

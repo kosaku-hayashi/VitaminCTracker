@@ -5,20 +5,12 @@ namespace VitaminCTracker.Patches
 	[HarmonyPatch(typeof(Panel_FirstAid), nameof(Panel_FirstAid.Enable), new Type[] { typeof(bool) })]
 	public class Panel_FirstAid_Enable
 	{
-		private static bool WasInit { get; set; } = false;
-
-		public static void Prefix(Panel_FirstAid __instance)
+		public static void Postfix(Panel_FirstAid __instance, bool enable)
 		{
-			if (!__instance.enabled) return;
-
-			Main.Logger.Log("Panel_FirstAid.Enable", FlaggedLoggingLevel.Debug);
-
-			if (!WasInit)
-			{
-				Main.Logger.Log("!WasInit", FlaggedLoggingLevel.Debug);
-				__instance.gameObject.AddComponent<VitaminTrackerBar>();
-				WasInit = true;
-			}
+			if (!enable) return;
+			Main.Logger.Log("VitaminCTracker: Panel_FirstAid.Enable(true) detected.");
+			var tracker = __instance.gameObject.GetComponent<VitaminTrackerBar>() ?? __instance.gameObject.AddComponent<VitaminTrackerBar>();
+			tracker.ApplyLayout();
 		}
 	}
 }

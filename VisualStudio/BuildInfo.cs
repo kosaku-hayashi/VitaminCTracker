@@ -31,7 +31,7 @@ namespace VitaminCTracker
 		/// <para>This should only be increased if you actually require a newer version of MelonLoader. NEVER change it before an update has been properly tested</para>
 		/// <para>If a user has a version less than this, MelonLoader will not load this mod</para>
 		/// </remarks>
-		public const string MelonLoaderVersion              = "0.6.1";
+		public const string MelonLoaderVersion              = "0.7.2-ci.2388";
 		#endregion
 
 		#region Optional

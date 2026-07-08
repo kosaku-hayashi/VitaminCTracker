@@ -15,11 +15,8 @@
 		{
 			base.OnConfirm();
 
-			var tracker = InterfaceManager.GetPanel<Panel_FirstAid>().GetComponent<VitaminTracking.VitaminTrackerBar>();
-			if (tracker != null)
-			{
-				tracker.SwapDirection(Instance.SwapDirection);
-			}
+			var tracker = InterfaceManager.GetPanel<Panel_FirstAid>()?.GetComponent<VitaminTracking.VitaminTrackerBar>();
+			tracker?.ApplyLayout();
 		}
 
 		// This is used to load the settings
